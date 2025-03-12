@@ -19,7 +19,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { CountryDropdown } from "@/components/ui/country-dropdown";
 
-export default function ItinerayPage() {
+export default function ItineriesPage() {
 	const [date, setDate] = React.useState<DateRange | undefined>({
 		from: new Date(),
 		to: addDays(new Date(), 20),
