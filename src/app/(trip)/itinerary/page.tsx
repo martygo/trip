@@ -17,7 +17,6 @@ import {
 	PopoverTrigger,
 } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
-import { CountryDropdown } from "@/components/ui/country-dropdown";
 
 export default function ItineriesPage() {
 	const [date, setDate] = React.useState<DateRange | undefined>({
@@ -39,9 +38,6 @@ export default function ItineriesPage() {
 							<Label htmlFor="quantity">
 								Country <span className="text-red-500">*</span>
 							</Label>
-							<div>
-								<CountryDropdown placeholder="Select countries" />
-							</div>
 						</div>
 
 						<div className="space-y-2">
