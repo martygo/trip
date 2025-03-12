@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+
 import { register, RegisterFormData } from "@/app/actions/auth";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Link from "next/link";
 
 export default function RegisterPage() {
 	const router = useRouter();
@@ -37,7 +39,7 @@ export default function RegisterPage() {
 	}
 
 	return (
-		<div className="container flex h-screen w-screen flex-col items-center justify-center">
+		<div className="container flex h-screen w-full flex-col items-center justify-center">
 			<div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
 				<div className="flex flex-col space-y-2 text-center">
 					<h1 className="text-2xl font-semibold tracking-tight">
@@ -47,6 +49,7 @@ export default function RegisterPage() {
 						Enter your email below to create your account
 					</p>
 				</div>
+
 				<form onSubmit={handleSubmit} className="space-y-4">
 					<div className="space-y-2">
 						<Label htmlFor="name">Name</Label>
@@ -66,11 +69,13 @@ export default function RegisterPage() {
 						<Label htmlFor="password">Password</Label>
 						<Input id="password" name="password" type="password" required />
 					</div>
+
 					{error && <p className="text-sm text-red-500">{error}</p>}
 					<Button className="w-full" type="submit" disabled={loading}>
 						{loading ? "Creating account..." : "Create account"}
 					</Button>
 				</form>
+
 				<p className="px-8 text-center text-sm text-muted-foreground">
 					<Link
 						href="/login"
