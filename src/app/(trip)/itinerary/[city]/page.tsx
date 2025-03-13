@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 
 import {
 	Carousel,
@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/carousel";
 
 export default function ItinerayPage() {
-	// const searchParams = useSearchParams();
+	const searchParams = useSearchParams();
 	const categories = [
 		{
 			title: "Dom Barriga",
@@ -42,10 +42,18 @@ export default function ItinerayPage() {
 	];
 
 	const cityParams = useParams<{ city: string }>();
-	// const numberOfPeopleParams = searchParams.get("numberOfPeople");
-	// const startDateParams = searchParams.get("startDate");
-	// const endDateParams = searchParams.get("endDate");
-	// const opcionalContentParams = searchParams.get("opcional");
+	const numberOfPeopleParams = searchParams.get("numberOfPeople");
+	const startDateParams = searchParams.get("startDate");
+	const endDateParams = searchParams.get("endDate");
+	const opcionalContentParams = searchParams.get("opcional");
+
+	console.log(
+		cityParams,
+		numberOfPeopleParams,
+		startDateParams,
+		endDateParams,
+		opcionalContentParams,
+	);
 
 	return (
 		<section className="max-w-6xl mx-auto w-full px-4 min-h-screen">

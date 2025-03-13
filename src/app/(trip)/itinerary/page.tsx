@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useState } from "react";
 import { addDays, format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { DateRange } from "react-day-picker";
@@ -17,9 +17,10 @@ import {
 	PopoverTrigger,
 } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
+import { CountryDropdown } from "@/components/shared/country-dropdown";
 
 export default function ItineriesPage() {
-	const [date, setDate] = React.useState<DateRange | undefined>({
+	const [date, setDate] = useState<DateRange | undefined>({
 		from: new Date(),
 		to: addDays(new Date(), 20),
 	});
@@ -38,6 +39,8 @@ export default function ItineriesPage() {
 							<Label htmlFor="quantity">
 								Country <span className="text-red-500">*</span>
 							</Label>
+
+							<CountryDropdown placeholder="Select country" />
 						</div>
 
 						<div className="space-y-2">
