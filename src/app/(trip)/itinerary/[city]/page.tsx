@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { useSearchParams, useParams } from "next/navigation";
+import { useParams } from "next/navigation";
 
 import {
 	Carousel,
@@ -12,41 +12,40 @@ import {
 	CarouselPrevious,
 } from "@/components/ui/carousel";
 
-export const categories = [
-	{
-		title: "Dom Barriga",
-		image:
-			"https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2e/48/26/9d/caption.jpg?w=500&h=500&s=1",
-		alt: "Interior of an upscale restaurant with wooden furnishings and bar area",
-	},
-	{
-		title: "Monarka",
-		image:
-			"https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2e/48/26/9d/caption.jpg?w=500&h=500&s=1",
-		alt: "Golden Gate Bridge in San Francisco with a beach view",
-	},
-	{
-		title: "Casa do Pão de Queijo",
-		image:
-			"https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2e/48/26/9d/caption.jpg?w=500&h=500&s=1",
-		alt: "Cityscape with cable cars and historic buildings",
-	},
-	{
-		title: "Yummy",
-		image:
-			"https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2e/48/26/9d/caption.jpg?w=500&h=500&s=1",
-		alt: "Angkor Wat temple with its reflection in water",
-	},
-];
-
 export default function ItinerayPage() {
-	const searchParams = useSearchParams();
+	// const searchParams = useSearchParams();
+	const categories = [
+		{
+			title: "Dom Barriga",
+			image:
+				"https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2e/48/26/9d/caption.jpg?w=500&h=500&s=1",
+			alt: "Interior of an upscale restaurant with wooden furnishings and bar area",
+		},
+		{
+			title: "Monarka",
+			image:
+				"https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2e/48/26/9d/caption.jpg?w=500&h=500&s=1",
+			alt: "Golden Gate Bridge in San Francisco with a beach view",
+		},
+		{
+			title: "Casa do Pão de Queijo",
+			image:
+				"https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2e/48/26/9d/caption.jpg?w=500&h=500&s=1",
+			alt: "Cityscape with cable cars and historic buildings",
+		},
+		{
+			title: "Yummy",
+			image:
+				"https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2e/48/26/9d/caption.jpg?w=500&h=500&s=1",
+			alt: "Angkor Wat temple with its reflection in water",
+		},
+	];
 
 	const cityParams = useParams<{ city: string }>();
-	const numberOfPeopleParams = searchParams.get("numberOfPeople");
-	const startDateParams = searchParams.get("startDate");
-	const endDateParams = searchParams.get("endDate");
-	const opcionalContentParams = searchParams.get("opcional");
+	// const numberOfPeopleParams = searchParams.get("numberOfPeople");
+	// const startDateParams = searchParams.get("startDate");
+	// const endDateParams = searchParams.get("endDate");
+	// const opcionalContentParams = searchParams.get("opcional");
 
 	return (
 		<section className="max-w-6xl mx-auto w-full px-4 min-h-screen">
