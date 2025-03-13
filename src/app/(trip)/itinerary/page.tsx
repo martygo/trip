@@ -25,7 +25,7 @@ export default function ItineriesPage() {
 	});
 
 	return (
-		<section className="max-w-[1100px] mx-auto w-full px-4 min-h-screen">
+		<section className="max-w-6xl mx-auto w-full px-4 min-h-screen">
 			<div className="mt-10">
 				<h2 className="text-3xl font-bold text-gray-900">Plan your trip</h2>
 				<p>Fill in the form below to plan your trip.</p>
@@ -101,9 +101,11 @@ export default function ItineriesPage() {
 						<Textarea placeholder="Type your message here." />
 					</div>
 
-					<Button className="w-full mt-5" type="submit">
-						Submit
-					</Button>
+					<div className="w-full sm:w-[fit-content]">
+						<Button className="w-full mt-5" type="submit">
+							Generate itinerary
+						</Button>
+					</div>
 				</form>
 			</div>
 		</section>
