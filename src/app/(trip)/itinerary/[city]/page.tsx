@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { useParams, useSearchParams } from "next/navigation";
+import { GoogleGenAI } from "@google/genai";
 
 import {
 	Carousel,
@@ -12,259 +13,89 @@ import {
 	CarouselPrevious,
 } from "@/components/ui/carousel";
 
+const ai = new GoogleGenAI({
+	apiKey: "AIzaSyAUlx8YGiVQBlNxxcLRZxUgilmp43sKFqw",
+});
+
 export default function ItinerayPage() {
+	const [loading, setLoading] = React.useState(false);
+	const [itinerary, setItinerary] = React.useState<any>(null);
+	const [error, setError] = React.useState<string | null>(null);
+
 	const searchParams = useSearchParams();
-	const categories = [
-		{
-			title: "Dom Barriga",
-			image:
-				"https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2e/48/26/9d/caption.jpg?w=500&h=500&s=1",
-			alt: "Interior of an upscale restaurant with wooden furnishings and bar area",
-		},
-		{
-			title: "Monarka",
-			image:
-				"https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2e/48/26/9d/caption.jpg?w=500&h=500&s=1",
-			alt: "Golden Gate Bridge in San Francisco with a beach view",
-		},
-		{
-			title: "Casa do Pão de Queijo",
-			image:
-				"https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2e/48/26/9d/caption.jpg?w=500&h=500&s=1",
-			alt: "Cityscape with cable cars and historic buildings",
-		},
-		{
-			title: "Yummy",
-			image:
-				"https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2e/48/26/9d/caption.jpg?w=500&h=500&s=1",
-			alt: "Angkor Wat temple with its reflection in water",
-		},
-	];
 
 	const cityParams = useParams<{ city: string }>();
-	const numberOfPeopleParams = searchParams.get("numberOfPeople");
-	const startDateParams = searchParams.get("startDate");
-	const endDateParams = searchParams.get("endDate");
-	const opcionalContentParams = searchParams.get("opcional");
+	const people = searchParams.get("numberOfPeople") as string;
+	const from = searchParams.get("departureDate") as string;
+	const to = searchParams.get("returnDate") as string;
+	const optional = searchParams.get("opcional");
 
-	console.log(
-		cityParams,
-		numberOfPeopleParams,
-		startDateParams,
-		endDateParams,
-		opcionalContentParams,
-	);
+	React.useEffect(() => {
+		async function generateItinerary() {
+			setLoading(true);
+			setError(null);
+			setItinerary(null);
+
+			const chat = ai.chats.create({
+				model: "gemini-2.5-pro-exp-03-25",
+			});
+
+			try {
+				const response = await chat.sendMessage({
+					message: `
+				- Create a itinerary for ${cityParams.city} with ${people} people.
+				- The trip is from ${from} to ${to}.
+				- The itinerary should include:
+					- 4 flights
+					- 4 hotels
+					- 4 restaurants
+					- 4 night clubs
+					- 4 activities to do
+				- The Hotels, Restaurants, Night Clubs, Activities, Daily itinerary must have property image, use images from a unsplash.
+				- If the user has provided any additional ${optional} information, include it in the itinerary.
+				- The output should be in JSON format only.
+			`,
+				});
+
+				setItinerary(JSON.parse(response.text as string));
+			} catch (error) {
+				setError("Error generating itinerary");
+			} finally {
+				setLoading(false);
+			}
+		}
+
+		generateItinerary();
+	}, [cityParams.city, from, optional, people, to]);
+
+	if (loading) {
+		return (
+			<div className="h-screen flex items-center justify-center">
+				<p className="text-center">Loading...</p>
+			</div>
+		);
+	}
+
+	if (error) {
+		return (
+			<div className="h-screen flex items-center justify-center">
+				<p className="text-center text-red-500">{error}</p>
+			</div>
+		);
+	}
+
+	if (!itinerary) {
+		return (
+			<div className="h-screen flex items-center justify-center">
+				<p className="text-center">No itinerary found</p>
+			</div>
+		);
+	}
 
 	return (
 		<section className="max-w-6xl mx-auto w-full px-4 min-h-screen">
 			<div className="mt-10">
-				<h2 className="text-3xl font-bold text-gray-900">
-					Your Itinerary for {cityParams.city.toUpperCase()}
-				</h2>
-				<p>
-					Bellow you will find a list of your activities for your trip to{" "}
-					<span className="font-bold">{cityParams.city.toUpperCase()}</span>.
-				</p>
-			</div>
-
-			{/* cheap flights */}
-			<div className="mt-10">
-				<div className="relative mb-6">
-					<h2 className="text-3xl font-bold text-slate-950">
-						Cheap Flights ✈️
-					</h2>
-					<div
-						className="absolute bottom-0 left-0 w-full h-1 bg-yellow-400"
-						style={{ width: "100%", height: "3px" }}
-					></div>
-				</div>
-
-				<Carousel className="w-full max-w-6xl">
-					<CarouselContent>
-						{categories.map((category, index) => (
-							<CarouselItem
-								key={index}
-								className="relative md:basis-1/2 lg:basis-1/4 pl-2 rounded-lg"
-							>
-								<div className="relative min-w-[200px] h-[250px] flex-shrink-0">
-									<Image
-										src={category.image}
-										alt={category.alt}
-										width={300}
-										height={350}
-										className="object-cover w-full h-full"
-									/>
-									<div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-									<h3 className="absolute bottom-8 left-8 text-white text-2xl font-bold">
-										{category.title}
-									</h3>
-								</div>
-							</CarouselItem>
-						))}
-					</CarouselContent>
-					<CarouselPrevious className="flex sm:hidden ml-[5rem]" />
-					<CarouselNext className="flex sm:hidden mr-[5rem]" />
-				</Carousel>
-			</div>
-
-			{/* hotels */}
-			<div className="mt-10">
-				<div className="relative mb-6">
-					<h2 className="text-3xl font-bold text-slate-950">
-						Recommended Hotels 🏨
-					</h2>
-					<div
-						className="absolute bottom-0 left-0 w-full h-1 bg-yellow-400"
-						style={{ width: "100%", height: "3px" }}
-					></div>
-				</div>
-
-				<Carousel className="w-full max-w-6xl">
-					<CarouselContent>
-						{categories.map((category, index) => (
-							<CarouselItem
-								key={index}
-								className="relative md:basis-1/2 lg:basis-1/4 pl-2 rounded-lg"
-							>
-								<div className="relative min-w-[200px] h-[250px] flex-shrink-0">
-									<Image
-										src={category.image}
-										alt={category.alt}
-										width={300}
-										height={350}
-										className="object-cover w-full h-full"
-									/>
-									<div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-									<h3 className="absolute bottom-8 left-8 text-white text-2xl font-bold">
-										{category.title}
-									</h3>
-								</div>
-							</CarouselItem>
-						))}
-					</CarouselContent>
-					<CarouselPrevious className="flex sm:hidden ml-[5rem]" />
-					<CarouselNext className="flex sm:hidden mr-[5rem]" />
-				</Carousel>
-			</div>
-
-			{/* restaurants */}
-			<div className="mt-10">
-				<div className="relative mb-6">
-					<h2 className="text-3xl font-bold text-slate-950">
-						Best&apos;s places to Eat 🥘
-					</h2>
-					<div
-						className="absolute bottom-0 left-0 w-full h-1 bg-yellow-400"
-						style={{ width: "100%", height: "3px" }}
-					></div>
-				</div>
-
-				<Carousel className="w-full max-w-6xl">
-					<CarouselContent>
-						{categories.map((category, index) => (
-							<CarouselItem
-								key={index}
-								className="relative md:basis-1/2 lg:basis-1/4 pl-2 rounded-lg"
-							>
-								<div className="relative min-w-[200px] h-[250px] flex-shrink-0">
-									<Image
-										src={category.image}
-										alt={category.alt}
-										width={300}
-										height={350}
-										className="object-cover w-full h-full"
-									/>
-									<div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-									<h3 className="absolute bottom-8 left-8 text-white text-2xl font-bold">
-										{category.title}
-									</h3>
-								</div>
-							</CarouselItem>
-						))}
-					</CarouselContent>
-					<CarouselPrevious className="flex sm:hidden ml-[5rem]" />
-					<CarouselNext className="flex sm:hidden mr-[5rem]" />
-				</Carousel>
-			</div>
-
-			{/* Place to fun: bars and drinks  */}
-			<div className="mt-10">
-				<div className="relative mb-6">
-					<h2 className="text-3xl font-bold text-slate-950">
-						Places to have fun 🏖️
-					</h2>
-					<div
-						className="absolute bottom-0 left-0 w-full h-1 bg-yellow-400"
-						style={{ width: "100%", height: "3px" }}
-					></div>
-				</div>
-
-				<Carousel className="w-full max-w-6xl">
-					<CarouselContent>
-						{categories.map((category, index) => (
-							<CarouselItem
-								key={index}
-								className="relative md:basis-1/2 lg:basis-1/4 pl-2 rounded-lg"
-							>
-								<div className="relative min-w-[200px] h-[250px] flex-shrink-0">
-									<Image
-										src={category.image}
-										alt={category.alt}
-										width={300}
-										height={350}
-										className="object-cover w-full h-full"
-									/>
-									<div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-									<h3 className="absolute bottom-8 left-8 text-white text-2xl font-bold">
-										{category.title}
-									</h3>
-								</div>
-							</CarouselItem>
-						))}
-					</CarouselContent>
-					<CarouselPrevious className="flex sm:hidden ml-[5rem]" />
-					<CarouselNext className="flex sm:hidden mr-[5rem]" />
-				</Carousel>
-			</div>
-
-			{/* Place to walk and entretainment */}
-			<div className="my-10">
-				<div className="relative mb-6">
-					<h2 className="text-3xl font-bold text-slate-950">
-						Places to know and entertainment 🌃
-					</h2>
-					<div
-						className="absolute bottom-0 left-0 w-full h-1 bg-yellow-400"
-						style={{ width: "100%", height: "3px" }}
-					></div>
-				</div>
-
-				<Carousel className="w-full max-w-6xl">
-					<CarouselContent>
-						{categories.map((category, index) => (
-							<CarouselItem
-								key={index}
-								className="relative md:basis-1/2 lg:basis-1/4 pl-2 rounded-lg"
-							>
-								<div className="relative min-w-[200px] h-[250px] flex-shrink-0">
-									<Image
-										src={category.image}
-										alt={category.alt}
-										width={300}
-										height={350}
-										className="object-cover w-full h-full"
-									/>
-									<div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-									<h3 className="absolute bottom-8 left-8 text-white text-2xl font-bold">
-										{category.title}
-									</h3>
-								</div>
-							</CarouselItem>
-						))}
-					</CarouselContent>
-					<CarouselPrevious className="flex sm:hidden ml-[5rem]" />
-					<CarouselNext className="flex sm:hidden mr-[5rem]" />
-				</Carousel>
+				<pre>{itinerary}</pre>
 			</div>
 		</section>
 	);

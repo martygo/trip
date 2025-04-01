@@ -1,30 +1,14 @@
-"use client";
-
-import { useState } from "react";
-import { addDays, format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
-import { DateRange } from "react-day-picker";
-
-import { cn } from "@/lib/utils";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Calendar } from "@/components/ui/calendar";
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "@/components/ui/popover";
+
 import { Textarea } from "@/components/ui/textarea";
-import { CountryDropdown } from "@/components/shared/country-dropdown";
+import { PinCalendar } from "@/components/shared/pin-calendar";
+import { CityInput } from "@/components/shared/city-input";
+
+import { redirectItinerary } from "@/app/actions/itinerary";
 
 export default function ItineriesPage() {
-	const [date, setDate] = useState<DateRange | undefined>({
-		from: new Date(),
-		to: addDays(new Date(), 20),
-	});
-
 	return (
 		<section className="max-w-6xl mx-auto w-full px-4 min-h-screen">
 			<div className="mt-10">
@@ -33,15 +17,9 @@ export default function ItineriesPage() {
 			</div>
 
 			<div className="mt-10">
-				<form className="space-y-2">
+				<form className="space-y-2" action={redirectItinerary}>
 					<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-						<div className="space-y-2">
-							<Label htmlFor="quantity">
-								Country <span className="text-red-500">*</span>
-							</Label>
-
-							<CountryDropdown placeholder="Select country" />
-						</div>
+						<CityInput />
 
 						<div className="space-y-2">
 							<Label htmlFor="quantity">
@@ -52,6 +30,7 @@ export default function ItineriesPage() {
 								name="quantity"
 								type="number"
 								placeholder="Enter the number of people"
+								defaultValue={1}
 								required
 							/>
 						</div>
@@ -60,48 +39,13 @@ export default function ItineriesPage() {
 							<Label htmlFor="quantity">
 								Departure / Return date <span className="text-red-500">*</span>
 							</Label>
-							<Popover>
-								<PopoverTrigger asChild>
-									<Button
-										id="date"
-										variant={"outline"}
-										className={cn(
-											"w-full justify-start text-left font-normal",
-											!date && "text-muted-foreground",
-										)}
-									>
-										<CalendarIcon />
-										{date?.from ? (
-											date.to ? (
-												<>
-													{format(date.from, "LLL dd, y")} -{" "}
-													{format(date.to, "LLL dd, y")}
-												</>
-											) : (
-												format(date.from, "LLL dd, y")
-											)
-										) : (
-											<span>Pick a date</span>
-										)}
-									</Button>
-								</PopoverTrigger>
-								<PopoverContent className="w-auto p-0" align="start">
-									<Calendar
-										initialFocus
-										mode="range"
-										defaultMonth={date?.from}
-										selected={date}
-										onSelect={setDate}
-										numberOfMonths={2}
-									/>
-								</PopoverContent>
-							</Popover>
+							<PinCalendar />
 						</div>
 					</div>
 
 					<div className="flex flex-col gap-2 mt-4">
 						<Label htmlFor="message">Write additional text (optional)</Label>
-						<Textarea placeholder="Type your message here." />
+						<Textarea placeholder="Type your message here." name="additional" />
 					</div>
 
 					<div className="w-full sm:w-[fit-content]">

@@ -96,6 +96,13 @@ const CountryDropdownComponent = (
 								{selectedCountry.name}
 							</span>
 						)}
+						<input
+							id="country"
+							name="country"
+							value={selectedCountry.name}
+							type="hidden"
+							readOnly={true}
+						/>
 					</div>
 				) : (
 					<span>
