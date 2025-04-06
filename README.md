@@ -1,36 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Trip Project Documentation
+
+## About Project
+
+SmartTrip is a Next.js application that helps users plan trips to various destinations around the world. It provides a platform for users to search for destinations, create itineraries, and get recommendations for flights, hotels, restaurants, nightlife, and activities. The application uses AI to generate personalized travel itineraries.
+
+Key features include:
+- User authentication (login/registration)
+- Destination search
+- Trip planning with dates and number of travelers
+- AI-generated travel itineraries with detailed recommendations
+- Responsive design for desktop and mobile devices
 
 ## Getting Started
+
+### Prerequisites
+- Node.js (v20 or newer)
+- npm
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd trip
+```
 
 First, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+npm run start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Project Structure
 
-## Learn More
+```
+trip/
+├── public/               # Static assets
+├── src/                  # Source code
+│   ├── app/              # Next.js App Router
+│   │   ├── (auth)/       # Authentication route group
+│   │   │   ├── login/    # Login page
+│   │   │   └── register/ # Registration page
+│   │   ├── (trip)/       # Trip route group
+│   │   │   └── itinerary/# Itinerary pages
+│   │   ├── _components/  # Shared components for app routes
+│   │   ├── actions/      # Server actions
+│   │   │   ├── auth.ts   # Authentication actions
+│   │   │   └── itinerary.ts # Itinerary actions
+│   │   ├── globals.css   # Global styles
+│   │   ├── layout.tsx    # Root layout
+│   │   └── page.tsx      # Home page
+│   ├── components/       # Reusable components
+│   │   ├── shared/       # Shared components
+│   │   └── ui/           # UI components
+│   ├── hooks/            # Custom React hooks
+│   └── lib/              # Utilities and helpers
+├── .env                  # Environment variables
+├── next.config.ts        # Next.js configuration
+├── package.json          # Dependencies and scripts
+├── postcss.config.mjs    # PostCSS configuration
+├── tailwind.config.js    # Tailwind CSS configuration
+└── tsconfig.json         # TypeScript configuration
+```
 
-To learn more about Next.js, take a look at the following resources:
+### Technologies Used
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+#### Core
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Next.js - React framework with App Router
+- React - UI library
+- TypeScript - Type-safe JavaScript
 
-## Deploy on Vercel
+#### Styling
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Tailwind CSS - Utility-first CSS framework
+- shadcn/ui - UI component library
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+#### Authentication
+
+- Custom authentication using server actions and cookies
+
+#### Data Validation
+
+- Zod - TypeScript-first schema validation
+
+#### UI Components
+
+- Embla Carousel - Carousel component
+- Lucide React - Icon library
+- React Day Picker - Date picker component
+
+#### Other Libraries
+
+- date-fns - JavaScript date utility library
+- Google Gemini AI - AI for generating itineraries
+- next-themes - Theme management
+
+Deploy on Vercel 🎊!
