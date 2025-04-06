@@ -1,5 +1,7 @@
 "use server";
 
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { z } from "zod";
 
 export const loginSchema = z.object({
@@ -17,34 +19,35 @@ export type LoginFormData = z.infer<typeof loginSchema>;
 export type RegisterFormData = z.infer<typeof registerSchema>;
 
 export async function login(data: LoginFormData) {
-	// Simulate network delay
-	await new Promise((resolve) => setTimeout(resolve, 1000));
+	const cookieStore = await cookies();
 
-	// Mock validation - replace with actual authentication
-	if (data.email === "test@example.com" && data.password === "password") {
-		return {
-			success: true,
-			user: { id: "1", email: data.email, name: "Test User" },
-		};
+	if (data.email === "" && data.password === "") {
+		cookieStore.set("auth", JSON.stringify({ auth: true }));
+		redirect("/");
 	}
 
+	cookieStore.set("auth", JSON.stringify({ auth: false }));
 	throw new Error("Invalid credentials");
 }
 
 export async function register(data: RegisterFormData) {
-	// Simulate network delay
-	await new Promise((resolve) => setTimeout(resolve, 1000));
+	const cookieStore = await cookies();
 
-	// Mock registration - replace with actual registration logic
-	return {
-		success: true,
-		user: { id: "1", email: data.email, name: data.name },
-	};
+	cookieStore.set(
+		"user",
+		JSON.stringify({
+			email: data.email,
+			name: data.name,
+			password: data.password,
+		}),
+	);
+
+	redirect("/login");
 }
 
 export async function logout() {
-	// Simulate network delay
-	await new Promise((resolve) => setTimeout(resolve, 1000));
+	const cookieStore = await cookies();
+	cookieStore.set("auth", JSON.stringify({ auth: false }));
 
-	return { success: true };
+	redirect("/login");
 }
