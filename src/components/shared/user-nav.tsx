@@ -40,12 +40,12 @@ export function UserNav() {
 				</DropdownMenuLabel>
 				<DropdownMenuSeparator />
 
-				<DropdownMenuGroup>
+				{/* <DropdownMenuGroup>
 					<DropdownMenuItem onClick={() => {}} className="cursor-pointer">
 						My trip plans
 					</DropdownMenuItem>
 				</DropdownMenuGroup>
-				<DropdownMenuSeparator />
+				<DropdownMenuSeparator /> */}
 
 				<DropdownMenuGroup>
 					<DropdownMenuItem onClick={logout} className="cursor-pointer">
