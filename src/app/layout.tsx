@@ -6,6 +6,7 @@ import Header from "./_components/header";
 
 import "./globals.css";
 import Footer from "./_components/footer";
+import { ThemeProvider } from "@/context/theme-provider";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -33,9 +34,16 @@ export default function RootLayout({
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 			>
 				<CookiesProvider>
-					<Header />
-					{children}
-					<Footer />
+					<ThemeProvider
+						attribute="class"
+						defaultTheme="system"
+						enableSystem
+						disableTransitionOnChange
+					>
+						<Header />
+						{children}
+						<Footer />
+					</ThemeProvider>
 				</CookiesProvider>
 			</body>
 		</html>

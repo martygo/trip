@@ -11,8 +11,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export default function LoginPage() {
-	const router = useRouter();
-
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
 
@@ -43,7 +41,7 @@ export default function LoginPage() {
 					<h1 className="text-2xl font-semibold tracking-tight">
 						Welcome back
 					</h1>
-					<p className="text-sm text-muted-foreground">
+					<p className="text-sm text-muted-foreground dark:text-white">
 						Enter your email to sign in to your account
 					</p>
 				</div>
@@ -70,7 +68,7 @@ export default function LoginPage() {
 					</Button>
 				</form>
 
-				<p className="px-8 text-center text-sm text-muted-foreground">
+				<p className="px-8 text-center text-sm text-muted-foreground dark:text-white">
 					<Link
 						href="/register"
 						className="hover:text-brand underline underline-offset-4"

@@ -8,7 +8,7 @@ export interface CityCardProps {
 	city: string;
 	country: string;
 	imageUrl: string;
-	href: string;
+	href?: string;
 	className?: string;
 	onClick?: () => void;
 }
@@ -22,9 +22,9 @@ export function CityCard({
 }: CityCardProps) {
 	return (
 		<Link
-			href={href}
+			href={href || "#"}
 			className={cn(
-				"relative overflow-hidden rounded-lg cursor-pointer group block",
+				"relative overflow-hidden rounded-lg cursor-pointer group block dark:border dark:border-gray-200",
 				className,
 			)}
 		>

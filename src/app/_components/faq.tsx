@@ -10,7 +10,7 @@ import {
 export default function Faq() {
 	return (
 		<section className="container py-20">
-			<h2 className="text-3xl font-bold text-gray-900 mb-2">
+			<h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
 				Frequently Asked Questions
 			</h2>
 

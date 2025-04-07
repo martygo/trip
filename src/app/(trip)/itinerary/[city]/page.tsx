@@ -154,7 +154,7 @@ export default function ItinerayPage() {
 				<div>
 					<LoaderCircle className="animate-spin" />
 				</div>
-				<h3 className="text-center text-2xl font-semibold tracking-tight">
+				<h3 className="text-center text-2xl font-semibold tracking-tight dark:text-white">
 					Creating your itinerary... Await a moment please.
 				</h3>
 			</div>
@@ -172,7 +172,7 @@ export default function ItinerayPage() {
 	if (!itineraries) {
 		return (
 			<div className="h-screen flex items-center justify-center">
-				<p className="text-center">No itinerary found</p>
+				<p className="text-center dark:text-white">No itinerary found</p>
 			</div>
 		);
 	}
@@ -181,33 +181,35 @@ export default function ItinerayPage() {
 		<section className="max-w-6xl mx-auto w-full px-4 min-h-screen">
 			<div className="mt-10">
 				<div className="mt-10">
-					<h2 className="text-3xl font-bold text-gray-900">
+					<h2 className="text-3xl font-bold text-gray-900 dark:text-white">
 						Your Itinerary for {itineraries.trip_details.destination}
 					</h2>
-					<p>
+					<p className="dark:text-white">
 						Bellow you will find a list of your activities for your trip to{" "}
 						<span className="font-bold">
 							{itineraries.trip_details.destination}
 						</span>
 					</p>
 					<p className="mt-2">
-						<span className="font-bold">Trip Dates:</span>{" "}
+						<span className="font-bold dark:text-white">Trip Dates:</span>{" "}
 						{itineraries.trip_details.start_date} to{" "}
 						{itineraries.trip_details.end_date}
 					</p>
 					<p className="mt-2">
-						<span className="font-bold">Number of People:</span>{" "}
+						<span className="font-bold dark:text-white">Number of People:</span>{" "}
 						{itineraries.trip_details.travelers}
 					</p>
 					{itineraries.trip_details.notes && (
-						<p>Note: {itineraries.trip_details.notes}</p>
+						<p className="dark:text-white">
+							Note: {itineraries.trip_details.notes}
+						</p>
 					)}
 				</div>
 
 				{/* cheap flights */}
 				<div className="mt-10">
 					<div className="relative mb-6">
-						<h2 className="text-3xl font-bold text-slate-950">
+						<h2 className="text-3xl font-bold text-slate-950 dark:text-white">
 							Cheap Flights ✈️
 						</h2>
 						<div
@@ -248,7 +250,7 @@ export default function ItinerayPage() {
 				{/* hotels */}
 				<div className="mt-10">
 					<div className="relative mb-6">
-						<h2 className="text-3xl font-bold text-slate-950">
+						<h2 className="text-3xl font-bold text-slate-950 dark:text-white">
 							Recommended Hotels 🏨
 						</h2>
 						<div
@@ -288,7 +290,7 @@ export default function ItinerayPage() {
 				{/* restaurants */}
 				<div className="mt-10">
 					<div className="relative mb-6">
-						<h2 className="text-3xl font-bold text-slate-950">
+						<h2 className="text-3xl font-bold text-slate-950 dark:text-white">
 							Best&apos;s places to Eat 🥘
 						</h2>
 						<div
@@ -328,7 +330,7 @@ export default function ItinerayPage() {
 				{/* Place to fun: bars and drinks  */}
 				<div className="mt-10">
 					<div className="relative mb-6">
-						<h2 className="text-3xl font-bold text-slate-950">
+						<h2 className="text-3xl font-bold text-slate-950 dark:text-white">
 							Places to have fun 🏖️
 						</h2>
 						<div
@@ -368,7 +370,7 @@ export default function ItinerayPage() {
 				{/* Place to walk and entretainment */}
 				<div className="my-10">
 					<div className="relative mb-6">
-						<h2 className="text-3xl font-bold text-slate-950">
+						<h2 className="text-3xl font-bold text-slate-950 dark:text-white">
 							Places to know and entertainment 🌃
 						</h2>
 						<div
@@ -411,7 +413,7 @@ export default function ItinerayPage() {
 				{/* daily */}
 				<div className={`my-10 ${isAuthenticated ? "block" : "hidden"}`}>
 					<div className="relative mb-6">
-						<h2 className="text-3xl font-bold text-slate-950">
+						<h2 className="text-3xl font-bold text-slate-950 dark:text-white">
 							Daily Itinerary 🗓️
 						</h2>
 						<div
@@ -458,7 +460,7 @@ export default function ItinerayPage() {
 				{itineraries.itinerary.additionalNullInfo && (
 					<div className="my-10">
 						<div className="relative mb-6">
-							<h2 className="text-3xl font-bold text-slate-950">
+							<h2 className="text-3xl font-bold text-slate-950 dark:text-white">
 								Additional Information
 							</h2>
 						</div>
@@ -471,17 +473,17 @@ export default function ItinerayPage() {
 			<div
 				className={`container ${
 					isAuthenticated ? "hidden" : "flex"
-				} flex-col items-start gap-1 py-8`}
+				} flex-col items-center gap-1 py-8`}
 			>
-				<h1 className="text-2xl font-bold">
+				<h1 className="text-2xl font-bold dark:text-white">
 					Create an account and have more itinerary options.
 				</h1>
-				<p className="max-w-2xl text-base font-light text-foreground sm:text-lg">
+				<p className="max-w-2xl text-base font-light text-foreground sm:text-lg dark:text-white">
 					You can create an account to save your itineraries and have more
 					options. You can also share your itineraries with your friends and
 					family.
 				</p>
-				<div className="flex w-full items-center justify-start gap-2 pt-2">
+				<div className="flex w-full items-center justify-center gap-2 pt-2">
 					<Link
 						href="/register"
 						className="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-8 px-3 text-xs rounded-md"

@@ -11,7 +11,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export default function RegisterPage() {
-	const router = useRouter();
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
 
@@ -43,7 +42,7 @@ export default function RegisterPage() {
 					<h1 className="text-2xl font-semibold tracking-tight">
 						Create an account
 					</h1>
-					<p className="text-sm text-muted-foreground">
+					<p className="text-sm text-muted-foreground dark:text-white">
 						Enter your email below to create your account
 					</p>
 				</div>
@@ -77,7 +76,7 @@ export default function RegisterPage() {
 				<p className="px-8 text-center text-sm text-muted-foreground">
 					<Link
 						href="/login"
-						className="hover:text-brand underline underline-offset-4"
+						className="hover:text-brand underline underline-offset-4 dark:text-white"
 					>
 						Already have an account? Sign In
 					</Link>
