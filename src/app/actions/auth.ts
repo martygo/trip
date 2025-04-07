@@ -2,27 +2,38 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { z } from "zod";
 
-export const loginSchema = z.object({
-	email: z.string().email(),
-	password: z.string().min(6),
-});
-
-export const registerSchema = z.object({
-	email: z.string().email(),
-	password: z.string().min(6),
-	name: z.string().min(2),
-});
-
-export type LoginFormData = z.infer<typeof loginSchema>;
-export type RegisterFormData = z.infer<typeof registerSchema>;
-
-export async function login(data: LoginFormData) {
+export async function login(data: any) {
 	const cookieStore = await cookies();
+	const storedUser = cookieStore.get("user");
 
-	if (data.email === "" && data.password === "") {
-		cookieStore.set("auth", JSON.stringify({ auth: true }));
+	const email = data.email;
+	const password = data.password;
+
+	if (!storedUser) {
+		cookieStore.set("auth", JSON.stringify({ auth: false }));
+		throw new Error("User not found");
+	}
+
+	const user = JSON.parse(storedUser.value);
+
+	if (!user) {
+		cookieStore.set("auth", JSON.stringify({ auth: false }));
+		throw new Error("User not found");
+	}
+
+	if (user.email === email && user.password === password) {
+		cookieStore.set(
+			"auth",
+			JSON.stringify({
+				auth: true,
+				user: {
+					email: user.email,
+					name: user.name,
+				},
+			}),
+		);
+
 		redirect("/");
 	}
 
@@ -30,7 +41,7 @@ export async function login(data: LoginFormData) {
 	throw new Error("Invalid credentials");
 }
 
-export async function register(data: RegisterFormData) {
+export async function register(data: any) {
 	const cookieStore = await cookies();
 
 	cookieStore.set(
@@ -47,7 +58,7 @@ export async function register(data: RegisterFormData) {
 
 export async function logout() {
 	const cookieStore = await cookies();
-	cookieStore.set("auth", JSON.stringify({ auth: false }));
+	cookieStore.set("auth", JSON.stringify({ auth: false, user: null }));
 
 	redirect("/login");
 }

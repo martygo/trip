@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-import { login, LoginFormData } from "@/app/actions/auth";
+import { login } from "@/app/actions/auth";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,17 +22,15 @@ export default function LoginPage() {
 		setLoading(true);
 
 		const formData = new FormData(event.currentTarget);
-		const data: LoginFormData = {
+		const data = {
 			email: formData.get("email") as string,
 			password: formData.get("password") as string,
 		};
 
 		try {
 			await login(data);
-			router.push("/");
 		} catch (error) {
 			setError("Invalid credentials");
-			console.log(error);
 		} finally {
 			setLoading(false);
 		}

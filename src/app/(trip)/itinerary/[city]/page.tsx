@@ -13,6 +13,10 @@ import {
 	CarouselPrevious,
 } from "@/components/ui/carousel";
 
+import useAuth from "@/hooks/useAuth";
+import Link from "next/link";
+import { LoaderCircle } from "lucide-react";
+
 const ai = new GoogleGenAI({
 	apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY as string,
 });
@@ -23,6 +27,7 @@ export default function ItinerayPage() {
 	const [error, setError] = React.useState<string | null>(null);
 
 	const searchParams = useSearchParams();
+	const { isAuthenticated } = useAuth();
 
 	const cityParams = useParams<{ city: string }>();
 	const people = searchParams.get("numberOfPeople") as string;
@@ -53,11 +58,11 @@ export default function ItinerayPage() {
 				- Create a itinerary for ${cityParams.city} with ${people} people.
 				- The trip is from ${from} to ${to}.
 				- The itinerary should include:
-					- 1 flights
-					- 2 hotels
-					- 2 restaurants
-					- 2 night clubs
-					- 3 activities to do
+					- ${isAuthenticated ? "4" : "1"} flights
+					- ${isAuthenticated ? "4" : "2"} hotels
+					- ${isAuthenticated ? "4" : "2"} restaurants
+					- ${isAuthenticated ? "4" : "2"} night clubs
+					- ${isAuthenticated ? "4" : "3"} activities to do
 				- The Hotels, Restaurants, Night Clubs, Activities, Daily itinerary must have property image, use images from a unsplash.
 				- If the user has provided any additional ${optional} information, include it in the itinerary.
 				- The output should be in JSON format only. The JSON should have the following structure:
@@ -141,12 +146,17 @@ export default function ItinerayPage() {
 		}
 
 		generateItinerary();
-	}, [cityParams.city, from, optional, people, to]);
+	}, [cityParams.city, from, isAuthenticated, optional, people, to]);
 
 	if (loading) {
 		return (
-			<div className="h-screen flex items-center justify-center">
-				<p className="text-center">Loading...</p>
+			<div className="h-screen flex flex-col items-center justify-center">
+				<div>
+					<LoaderCircle className="animate-spin" />
+				</div>
+				<h3 className="text-center text-2xl font-semibold tracking-tight">
+					Creating your itinerary... Await a moment please.
+				</h3>
 			</div>
 		);
 	}
@@ -399,7 +409,7 @@ export default function ItinerayPage() {
 				</div>
 
 				{/* daily */}
-				<div className="my-10">
+				<div className={`my-10 ${isAuthenticated ? "block" : "hidden"}`}>
 					<div className="relative mb-6">
 						<h2 className="text-3xl font-bold text-slate-950">
 							Daily Itinerary 🗓️
@@ -456,6 +466,29 @@ export default function ItinerayPage() {
 						<p>{itineraries.itinerary.additionalNullInfo}</p>
 					</div>
 				)}
+			</div>
+
+			<div
+				className={`container ${
+					isAuthenticated ? "hidden" : "flex"
+				} flex-col items-start gap-1 py-8`}
+			>
+				<h1 className="text-2xl font-bold">
+					Create an account and have more itinerary options.
+				</h1>
+				<p className="max-w-2xl text-base font-light text-foreground sm:text-lg">
+					You can create an account to save your itineraries and have more
+					options. You can also share your itineraries with your friends and
+					family.
+				</p>
+				<div className="flex w-full items-center justify-start gap-2 pt-2">
+					<Link
+						href="/register"
+						className="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-8 px-3 text-xs rounded-md"
+					>
+						Create an account
+					</Link>
+				</div>
 			</div>
 		</section>
 	);

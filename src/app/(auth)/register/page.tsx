@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-import { register, RegisterFormData } from "@/app/actions/auth";
+import { register } from "@/app/actions/auth";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,7 +21,7 @@ export default function RegisterPage() {
 		setLoading(true);
 
 		const formData = new FormData(event.currentTarget);
-		const data: RegisterFormData = {
+		const data = {
 			name: formData.get("name") as string,
 			email: formData.get("email") as string,
 			password: formData.get("password") as string,
@@ -29,10 +29,8 @@ export default function RegisterPage() {
 
 		try {
 			await register(data);
-			router.push("/");
 		} catch (error) {
 			setError("Something went wrong");
-			console.log(error);
 		} finally {
 			setLoading(false);
 		}

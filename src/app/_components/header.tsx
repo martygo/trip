@@ -7,8 +7,10 @@ import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { UserNav } from "@/components/shared/user-nav";
 
+import useAuth from "@/hooks/useAuth";
+
 export default function Header() {
-	const [isAuthenticated] = React.useState(false);
+	const { isAuthenticated } = useAuth();
 
 	return (
 		<header className="sticky top-0 z-20 flex justify-between items-center p-4 bg-green-600 border-b border-green-700">
